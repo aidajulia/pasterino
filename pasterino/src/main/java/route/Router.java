@@ -25,7 +25,7 @@ import spark.template.freemarker.FreeMarkerEngine;
 
 public class Router {
     private static final String TITLE = "Pasteri.no";
-    private static final String REDIS_PASSWORD = "";
+    private static final String REDIS_PASSWORD = "c206728c50a01f00e64365be1a728a98";
     private static final String REDIS_URI = "redis://" + REDIS_PASSWORD + "@bluegill.redistogo.com:9645/0";
     private static final RedisClient REDIS_CLIENT = RedisClient.create(REDIS_URI);
     private static final RedisCommands<String, String> DB = REDIS_CLIENT.connect().sync();
@@ -46,7 +46,7 @@ public class Router {
             fields.put("title", TITLE);
             fields.put("desc", "A place for your Java snippets.");
 
-            return new ModelAndView(fields, "resources/index.ftl");
+            return new ModelAndView(fields, "index.ftl");
         }, fme);
 
         get("/favicon.ico",
@@ -81,7 +81,7 @@ public class Router {
                     }
 
                     fields.put("pastelist", keyList.toString());
-                    return new ModelAndView(fields, "resources/browse.ftl");
+                    return new ModelAndView(fields, "browse.ftl");
                 }, fme);
 
         get("/pastes/*", (req, res) -> {
@@ -98,7 +98,7 @@ public class Router {
             } else
                 fields.put("code", load(req.splat()[0]));
 
-            return new ModelAndView(fields, "resources/paste.ftl");
+            return new ModelAndView(fields, "paste.ftl");
         }, fme);
 
         post("/addPaste", (req, res) -> {
@@ -126,7 +126,7 @@ public class Router {
         });
 
         get("*", (req, res) -> {
-            return new ModelAndView(null, "resources/404.ftl");
+            return new ModelAndView(null, "404.ftl");
         }, fme);
         
         Desktop.getDesktop().browse(URI.create("http://localhost:8080/"));
